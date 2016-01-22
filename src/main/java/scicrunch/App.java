@@ -6,6 +6,8 @@ import static org.semanticweb.owlapi.vocab.OWLFacet.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.util.*;
 
 
@@ -41,79 +43,38 @@ public class App
         manager.saveOntology(ontology, format, new FileDocumentTarget(outfile));
     }
 
+    public String[] get_file_list( String pathname ) throws Exception {
+        FileReader fileReader = new FileReader(pathname);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        List<String> lines = new ArrayList<String>();
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            lines.add(line);
+        }
+        bufferedReader.close();
+        return lines.toArray(new String[lines.size()]);
+    }
+
     public static void main( String[] args )
     {
         App app = new App();
-        String[] files_ = {
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Annotation-Standard.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Cell.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Chemical.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Dysfunction-DOID-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-GO-CC-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-GrossAnatomy-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-GrossAnatomy.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Molecule-PRO-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Molecule-Role-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Molecule-Role-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Molecule.owl",
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITax-Bridge.owl", // validate vs slim
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITax-Slim-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITaxonomy-EnglishNames.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITaxonomy-Slim-EnglishNames.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITaxonomy-Slim.owl", // junk @ end of file
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-BR-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-BrainRegion-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-Circuit-Role-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-Circuit-Role-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-MolecularConstituent-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-Morphology-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-Morphology-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-NT-Bridge-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-NT-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-Quality-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Neuron-SomaLocation-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Organism.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-PRO-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Quality.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Resource.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Subcell-GO-CC-Equiv-Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Subcellular.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Unclassified.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF_Neuron_MolecularConstituent_Bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/PRO.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/SAO-CORE_properties.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/biological_process.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/cellular_component.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/quality.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/quality_bfo_bridge.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/sequence.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/sequence_slim.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/uberon-bridge-to-nifstd.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/uberon.owl",
-        };
-        String[] files = {
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Dysfunction-DOID-Bridge.owl",
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Molecule-PRO-Bridge.owl",
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Molecule-Role-Bridge.owl",
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Molecule-Role-Inferred.owl",
-            "/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITax-Bridge.owl", // XXX not imported anywhere
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITax-Slim-Inferred.owl",
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITaxonomy-EnglishNames.owl",
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITaxonomy-Slim-EnglishNames.owl",
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-NCBITaxonomy-Slim.owl",
-            //"/home/tom/git/NIF-Ontology/BiomaterialEntities/NIF-Organism.owl",
-            };
-
-        for (String file : files_) {
+        for (String file_list: args) {
             try {
-                app.loadSave(file);
-            } catch (Exception bob) {
-                System.out.println( "Failed to load file. " + file);
-                System.out.println( bob.getMessage() );
+                String[] files = app.get_file_list(file_list);
+                for (String file : files) {
+                    try {
+                        app.loadSave(file);
+                    } catch (Exception bob) {
+                        System.out.println( "Failed to load file. " + file);
+                        System.out.println( bob.getMessage() );
+                    }
+                    //System.out.println( "Hello World!" );
+                }
+            } catch (Exception phil) {
+                    System.out.println( "Failed to find file list. " + file_list);
+                    System.out.println( phil.getMessage() );
             }
-            System.out.println( "Hello World!" );
+
         }
     }
 }
