@@ -28,10 +28,12 @@ public class App
 {
     public void loadSave( String pathname ) throws Exception {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntologyLoaderConfiguration loadConfig = new OWLOntologyLoaderConfiguration();
+        loadConfig = loadConfig.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);
         System.out.println(pathname);
         File infile = new File(pathname);
         File outfile = new File(pathname + ".ttl");
-        OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new FileDocumentSource(infile));
+        OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new FileDocumentSource(infile), loadConfig);
         //ontology.getImports();
 
         OWLDocumentFormat owlformat = manager.getOntologyFormat(ontology);
