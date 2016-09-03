@@ -64,23 +64,14 @@ public class App
     public static void main( String[] args )
     {
         App app = new App();
-        for (String file_list: args) {
+        for (String file: args) {
+            System.out.println( "READING: " + file );
             try {
-                String[] files = app.get_file_list(file_list);
-                for (String file : files) {
-                    try {
-                        app.loadSave(file);
-                    } catch (Exception bob) {
-                        System.out.println( "Failed to load file. " + file);
-                        System.out.println( bob.getMessage() );
-                    }
-                    //System.out.println( "Hello World!" );
-                }
-            } catch (Exception phil) {
-                    System.out.println( "Failed to find file list. " + file_list);
-                    System.out.println( phil.getMessage() );
+                app.loadSave(file);
+            } catch (Exception bob) {
+                System.out.println( "Failed to load file. " + file);
+                System.out.println( bob.getMessage() );
             }
-
         }
     }
 }
