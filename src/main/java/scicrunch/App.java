@@ -34,7 +34,7 @@ public class App
         File infile = new File(pathname);
         File outfile = new File(pathname + ".ttl");
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new FileDocumentSource(infile), loadConfig);
-        //ontology.getImports();
+        ontology.getImports();
 
         OWLDocumentFormat owlformat = manager.getOntologyFormat(ontology);
 
